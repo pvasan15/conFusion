@@ -13,7 +13,6 @@ export class MenuComponent implements OnInit {
   selectedDish: Dish;
 
   onSelect(dish: Dish) {
-    //this.selectedDish = dish;
     this.router.navigate(['/dishdetail', dish.id]);
   }
   
@@ -21,7 +20,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.dishService.getDishes()
-      .then((dishes) => this.dishes = dishes);
+      .subscribe((dishes) => this.dishes = dishes);
   }
 
 }
