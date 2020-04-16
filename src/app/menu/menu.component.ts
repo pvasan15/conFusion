@@ -11,10 +11,6 @@ import { Router } from '@angular/router';
 export class MenuComponent implements OnInit {
   dishes: Dish[];
   selectedDish: Dish;
-
-  onSelect(dish: Dish) {
-    this.router.navigate(['/dishdetail', dish.id]);
-  }
   
   constructor(private dishService: DishService, private router: Router) { }
 
