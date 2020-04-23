@@ -2,10 +2,9 @@
     fxLayout="row"
     fxLayout.sm="column"
     fxLayout.xs="column"
-    fxLayoutAlign.gt-md="space-around center"
-    fxLayoutGap="10px"
+    fxLayoutGap="100px"
     fxLayoutGap.xs="0">
-    <div fxFlex="40" *ngIf="dish">
+    <div fxFlex="50" *ngIf="dish">
             <mat-card>
                 <mat-card-header>
                     <mat-card-title>
@@ -37,7 +36,7 @@
         <h2>Error</h2>
         <h4>{{errMess}}</h4>
     </div>
-    <div fxFlex="40" *ngIf="dish">
+    <div fxFlex="50" *ngIf="dish">
         <mat-list> 
             <h3>Comments</h3>
                 <mat-list-item *ngFor="let item of dish.comments">
