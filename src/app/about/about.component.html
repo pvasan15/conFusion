@@ -62,8 +62,8 @@
     fxLayoutAlign.gt-md="space-around center"
     fxLayoutGap="10px"
     fxLayoutGap.xs="0">
-    <div>
-        <mat-list-item *ngFor="let item of leaders">
+    <div fxflex>
+        <mat-list-item *ngFor="let item of leaders" [@expand]>
             <img mat-card-image src={{item.image}} alt={{item.name}}>
         </mat-list-item>
     </div>
