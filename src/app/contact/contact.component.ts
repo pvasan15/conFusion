@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
 import { flyInOut } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contact',
@@ -20,6 +22,8 @@ export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
   contactType = ContactType;
+  errMess: string;
+  submit:boolean;
   @ViewChild('fform',{static:true}) feebackFormDirective: { resetForm: () => void; };
 
   formErrors = {
@@ -50,7 +54,7 @@ export class ContactComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder) { 
+  constructor(private feedbackService: FeedbackService, private fb: FormBuilder, private router: Router) { 
     this.createForm();
   }
 
@@ -94,7 +98,16 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
+    this.feedback.firstname = this.feedback.firstname.charAt(0).toUpperCase() + this.feedback.firstname.substr(1);
+    this.feedback.lastname = this.feedback.lastname.charAt(0).toUpperCase() + this.feedback.lastname.substr(1);
+    this.submit = true;
+    this.feedbackService.submitFeedback(this.feedback)
+      .subscribe(feedback => {
+         this.feedback = feedback; this.router.navigate(['feedback', {firstname: this.feedback.firstname, lastname: 
+          this.feedback.lastname, telno: this.feedback.telnum, email: this.feedback.email, agree: this.feedback.agree, 
+          how: this.feedback.contactType, message: this.feedback.message}]);
+      },
+      errmess => { this.feedback = null; this.errMess = <any>errmess; })
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
@@ -104,7 +117,7 @@ export class ContactComponent implements OnInit {
       contactType: 'None',
       message: ''
     }); 
-    this.feebackFormDirective.resetForm();
+    this.feebackFormDirective.resetForm(); 
   }
 
 }
