@@ -36,6 +36,7 @@ import { baseURL } from './shared/baseurl';
 import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { HighlightDirective } from './directives/highlight.directive';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { FeedbackComponent } from './feedback/feedback.component';
     PromotionService,
     LeaderService,
     ProcessHTTPMsgService,
+    HttpClient,
     { provide: 'BaseURL', useValue: baseURL }
   ],
   entryComponents: [
