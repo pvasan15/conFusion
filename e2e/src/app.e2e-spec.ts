@@ -8,16 +8,30 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getTitleText()).toEqual('conFusion app is running!');
+  it('should display message saying Ristorante Con Fusion', () => {
+    page.navigateTo('/');
+    expect(page.getParagraphText('app-root h1')).toEqual('Ristorante Con Fusion');
   });
 
-  afterEach(async () => {
-    // Assert that there are no errors emitted from the browser
-    const logs = await browser.manage().logs().get(logging.Type.BROWSER);
-    expect(logs).not.toContain(jasmine.objectContaining({
-      level: logging.Level.SEVERE,
-    } as logging.Entry));
-  });
+  it('should navigate to about us page by clicking on the link about us', () => {
+    page.navigateTo('/');
+    let navlink = page.getAllElements('a').get(1);
+    navlink.click();
+    expect(page.getParagraphText('app-root h3')).toBe('About Us');
+  })
+
+  it('should enter a new comment for the first dish', () => {
+    page.navigateTo('/dishdetail/0');
+
+    const newAuthor = page.getElement('input[type=text]');
+    newAuthor.sendKeys('Test Author 1');
+
+    const newComment = page.getElement('textarea');
+    newComment.sendKeys('Test Comment 1');
+
+    const newSubmitButton = page.getElement('button[type=submit]');
+    newSubmitButton.click();
+
+    browser.pause();
+  })
 });
