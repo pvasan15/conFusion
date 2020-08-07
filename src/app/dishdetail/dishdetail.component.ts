@@ -52,7 +52,7 @@ export class DishdetailComponent implements OnInit {
     }
 
   constructor(private dishService: DishService, private route: ActivatedRoute, private location: Location, private fb: FormBuilder,
-    @Inject('BaseURL') private BaseURL) { 
+    @Inject('BaseURL') public BaseURL) { 
     this.createForm();
   }
 

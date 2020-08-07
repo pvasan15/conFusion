@@ -17,7 +17,7 @@ import { flyInOut, expand } from '../animations/app.animation';
   },
   animations: [
     flyInOut(), expand()
-  ]
+  ] 
 })
 export class HomeComponent implements OnInit {
   
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   leader : Leader;
 
   constructor(private dishservice: DishService, private promotionservice: PromotionService, private leaderService: LeaderService,
-    @Inject('BaseURL') private BaseURL) { }
+    @Inject('BaseURL') public BaseURL) { }
 
   ngOnInit() {
     this.dishservice.getFeaturedDish()
