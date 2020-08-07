@@ -4,6 +4,7 @@ import { Feedback, ContactType } from '../shared/feedback';
 import { flyInOut } from '../animations/app.animation';
 
 import { Router } from '@angular/router';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
