@@ -4,7 +4,7 @@ import { Feedback, ContactType } from '../shared/feedback';
 import { flyInOut } from '../animations/app.animation';
 
 import { Router } from '@angular/router';
-import { FeedbackService } from '../services/feedback.service';
+import { FeedbackService } from '../services/feedback.service'; 
 
 @Component({
   selector: 'app-contact',
@@ -25,6 +25,8 @@ export class ContactComponent implements OnInit {
   contactType = ContactType;
   errMess: string;
   submit:boolean;
+  firstName:string;
+  lastName:string;
   @ViewChild('fform',{static:true}) feebackFormDirective: { resetForm: () => void; };
 
   formErrors = {
@@ -99,8 +101,10 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    this.feedback.firstname = this.feedback.firstname.charAt(0).toUpperCase() + this.feedback.firstname.substr(1);
-    this.feedback.lastname = this.feedback.lastname.charAt(0).toUpperCase() + this.feedback.lastname.substr(1);
+    this.firstName = this.feedback.firstname;
+    this.lastName = this.feedback.lastname;
+    this.feedback.firstname = this.firstName.replace(/^./, this.firstName[0].toUpperCase()); 
+    this.feedback.lastname = this.lastName.replace(/^./, this.lastName[0].toUpperCase()); 
     this.submit = true;
     this.feedbackService.submitFeedback(this.feedback)
       .subscribe(feedback => {
@@ -109,7 +113,7 @@ export class ContactComponent implements OnInit {
           how: this.feedback.contactType, message: this.feedback.message}]);
       },
       errmess => { this.feedback = null; this.errMess = <any>errmess; })
-    this.feedbackForm.reset({
+    /*this.feedbackForm.reset({
       firstname: '',
       lastname: '',
       telnum: 0,
@@ -117,8 +121,8 @@ export class ContactComponent implements OnInit {
       agree: false,
       contactType: 'None',
       message: ''
-    }); 
-    this.feebackFormDirective.resetForm(); 
+    }); */
+    //this.feebackFormDirective.resetForm(); 
   }
 
 }

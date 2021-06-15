@@ -4,8 +4,7 @@ import { DishService } from '../services/dish.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DISHES } from '../shared/dishes';
+import { FormBuilder, FormGroup, Validators, ControlContainer } from '@angular/forms';
 import { Comment } from '../shared/comment';
 import { visibility, flyInOut, expand } from '../animations/app.animation';
 
@@ -27,12 +26,12 @@ export class DishdetailComponent implements OnInit {
     dishIds: string[];
     prev: string;
     next: string;
-    @ViewChildren('cform') commentFormDirective;
     stars: number;
     name: string;
     dishcopy: Dish;
     comment: Comment;
     feedbackForm: FormGroup;
+    authorPattern: string;
     visibility = 'shown';
 
     formErrors = {
@@ -44,7 +43,8 @@ export class DishdetailComponent implements OnInit {
     validationMessages = {
       'author': {
         'required': 'Author Name is required.',
-        'minlength': 'Author Name must be at least 2 characters long.'
+        'minlength': 'Author Name must be at least 2 characters long.',
+        'pattern': 'Author Name must contain only letters.'
       },
       'comment': {
         'required': 'Comment is required.',
@@ -57,9 +57,10 @@ export class DishdetailComponent implements OnInit {
   }
 
   createForm() {
+    this.authorPattern = '^[a-zA-Z]+$';
     this.feedbackForm = this.fb.group({
       rating: [],
-      author: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
+      author: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25), Validators.pattern(this.authorPattern)]],
       comment: ['', Validators.required],
     })
 
@@ -109,19 +110,15 @@ export class DishdetailComponent implements OnInit {
 
   onSubmit() {
     this.comment = this.feedbackForm.value;
+    this.comment.author = this.comment.author.replace(/^./, this.comment.author[0].toUpperCase());
     this.comment.date = new Date().toISOString();
     this.dishcopy.comments.push(this.comment);
     this.dishService.putDish(this.dishcopy)
       .subscribe(dish => {
-        this.dish = dish; this.dishcopy = dish;
+        this.dish = dish; 
+        this.dishcopy = dish;
       },
-      errmess => { this.dish = null; this.dishcopy = null; this.errMess = <any>errmess; })
-    this.commentFormDirective.resetForm();
-    this.feedbackForm.reset({
-      author: '',
-      rating: 5,
-      comment: ''
-    })
+      errmess => { this.dish = null; this.dishcopy = null; this.errMess = <any>errmess; });
   }
 
 }
